@@ -39,3 +39,4 @@ export class TipoUsuario extends Model {
   @HasMany(() => Usuario)
   departamentos!: Usuario[];
 }
+// TipoUsuario com validators

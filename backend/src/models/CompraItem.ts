@@ -44,3 +44,4 @@ export class CompraItem extends Model {
   })
   quantidade!: number;
 }
+// Model CompraItem
