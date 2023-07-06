@@ -5,7 +5,7 @@ import {
   getProduto,
   updateProduto,
   removeProduto,
-} from './produto.services';
+} from './produto.service';
 import { CreateProdutoDto } from './produto.types';
 
 const index = async (req: Request, res: Response) => {

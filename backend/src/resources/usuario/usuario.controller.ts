@@ -5,7 +5,7 @@ import {
   getUsuario,
   updateUsuario,
   removeUsuario,
-} from './usuario.services';
+} from './usuario.service';
 import { CreateUsuarioDto } from './usuario.types';
 
 const index = async (req: Request, res: Response) => {
