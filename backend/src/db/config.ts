@@ -4,8 +4,8 @@ const connection = new Sequelize({
   dialect: 'mysql',
   host: 'db',
   username: 'root',
-  password: '@Momo1337',
-  database: 'express',
+  password: '123456',
+  database: 'lojavirtual',
   logging: false,
 });
 
