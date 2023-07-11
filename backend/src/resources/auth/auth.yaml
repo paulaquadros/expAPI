@@ -1,0 +1,204 @@
+tags:
+  name: auth
+  description: Endpoints da entidade auth
+
+paths:
+  /auth:
+    get:
+      summary: Retorna a listagem de auths cadastrados
+      tags: [auth]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/auth'
+    post:
+      summary: Cria um novo auth
+      tags: [auth]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAuthDto'
+        required: true
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth'
+        '400':
+          description: auth já existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'auth já existe' }
+        '403':
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'Operação não autorizada' }
+
+  /auth/{id}:
+    get:
+      summary: Retorna os dados de um auth
+      tags: [auth]
+      parameters:
+        - name: id
+          in: path
+          description: ID do auth (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth'
+        '400':
+          description: auth não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'auth não existe' }
+
+    put:
+      summary: Modifica os dados de um dado auth
+      tags: [auth]
+      parameters:
+        - name: id
+          in: path
+          description: ID do auth (UUID)
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAuthDto'
+        required: true
+      responses:
+        '200':
+          description: auth atualizado com os novos dados.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'auth atualizado.' }
+        '400':
+          description: O auth não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'auth não existe.' }
+        '403':
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'Operação não autorizada.' }
+    delete:
+      summary: Apaga um dado auth
+      tags: [auth]
+      parameters:
+        - name: id
+          in: path
+          description: ID do auth (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: auth apagado.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'auth apagado.' }
+        '400':
+          description: O auth não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'auth não existe.' }
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'Operação não autorizada.' }
+
+components:
+  schemas:
+    auth:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID do auth no formato UUID.
+          example: f5e606fe-5d40-4422-9a56-8d5079e3b504
+        nome:
+          type: string
+          description: Nome do auth.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
+        createdAt:
+          type: date
+          description: Data de criação do item no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+        updatedAt:
+          type: date
+          description: Data de atualização do item no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+    CreateAuthDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do auth.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
+    UpdateAuthDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do auth.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120

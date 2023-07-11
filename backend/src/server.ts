@@ -16,6 +16,8 @@ import setLocals from './middlewares/setLocals';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpecs from './swagger';
 
 const models = [VersaoDB, Usuario, TipoUsuario, Produto, Compra, CompraItem];
 
@@ -62,6 +64,7 @@ export class Api {
       }),
     );
     this.server.use(logger('completo'));
+    this.server.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
   }
 
   private async router() {

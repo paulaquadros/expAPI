@@ -1,5 +1,4 @@
 import swaggerJsdoc from 'swagger-jsdoc';
-
 const swaggerDefs = {
   openapi: '3.1.0',
   info: {
@@ -12,7 +11,6 @@ const swaggerDefs = {
     },
   ],
 };
-
 export default swaggerJsdoc({
   definition: swaggerDefs,
   apis: ['src/resources/**/*.yaml'],

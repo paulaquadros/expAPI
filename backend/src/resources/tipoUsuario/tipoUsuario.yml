@@ -1,0 +1,204 @@
+tags:
+  name: tipoUsuario
+  description: Endpoints da entidade tipoUsuario
+
+paths:
+  /tipoUsuario:
+    get:
+      summary: Retorna a listagem de tipoUsuarios cadastrados
+      tags: [tipoUsuario]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/tipoUsuario'
+    post:
+      summary: Cria um novo tipoUsuario
+      tags: [tipoUsuario]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTipoUsuarioDto'
+        required: true
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tipoUsuario'
+        '400':
+          description: tipoUsuario já existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'tipoUsuario já existe' }
+        '403':
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'Operação não autorizada' }
+
+  /tipoUsuario/{id}:
+    get:
+      summary: Retorna os dados de um tipoUsuario
+      tags: [tipoUsuario]
+      parameters:
+        - name: id
+          in: path
+          description: ID do tipoUsuario (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tipoUsuario'
+        '400':
+          description: tipoUsuario não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'tipoUsuario não existe' }
+
+    put:
+      summary: Modifica os dados de um dado tipoUsuario
+      tags: [tipoUsuario]
+      parameters:
+        - name: id
+          in: path
+          description: ID do tipoUsuario (UUID)
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTipoUsuarioDto'
+        required: true
+      responses:
+        '200':
+          description: tipoUsuario atualizado com os novos dados.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'tipoUsuario atualizado.' }
+        '400':
+          description: O tipoUsuario não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'tipoUsuario não existe.' }
+        '403':
+          description: Operação não autorizada.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'Operação não autorizada.' }
+    delete:
+      summary: Apaga um dado tipoUsuario
+      tags: [tipoUsuario]
+      parameters:
+        - name: id
+          in: path
+          description: ID do tipoUsuario (UUID)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: tipoUsuario apagado.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'tipoUsuario apagado.' }
+        '400':
+          description: O tipoUsuario não existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'tipoUsuario não existe.' }
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                example: { msg: 'Operação não autorizada.' }
+
+components:
+  schemas:
+    tipoUsuario:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID do tipoUsuario no formato UUID.
+          example: f5e606fe-5d40-4422-9a56-8d5079e3b504
+        nome:
+          type: string
+          description: Nome do tipoUsuario.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
+        createdAt:
+          type: date
+          description: Data de criação do item no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+        updatedAt:
+          type: date
+          description: Data de atualização do item no banco de dados.
+          example: 2023-07-02T10:04:07.000Z
+    CreateTipoUsuarioDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do tipoUsuario.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
+    UpdateTipoUsuarioDto:
+      type: object
+      properties:
+        nome:
+          type: string
+          description: Nome do tipoUsuario.
+          example: Celular Motorola Moto g52
+        preco:
+          type: float
+          description: Preço.
+          example: 1259.00
+        estoque:
+          type: integer
+          description: Número de ítens no estoque.
+          example: 120
