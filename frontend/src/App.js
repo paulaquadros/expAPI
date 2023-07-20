@@ -144,10 +144,8 @@ class App extends Component {
                 Products
               </button>
               <ul className="dropdown-menu dropdown-menu-dark">
-                <li>
-                  <a className="dropdown-item" href="/create">
-                    Create
-                  </a>
+                <li className="dropdown-item" onClick={this.createProduct}>
+                  Create
                 </li>
                 <li>
                   <a className="dropdown-item" href="/update">

@@ -1,5 +1,44 @@
 import React, { Component } from "react";
 
+const products = [
+  {
+    name: "PS5",
+    description:
+      "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
+    price: "R$ 4.999,90",
+  },
+  {
+    name: "Amazon Echo Dot",
+    description:
+      "O Echo Dot é o smart speaker de maior sucesso. Controlado por voz com Alexa, ele é perfeito para qualquer ambiente. Você pode pedir músicas, notícias, informações e muito mais. Além de ligar para amigos e familiares e controlar dispositivos compatíveis de casa inteligente com sua voz.",
+    price: "R$ 349,00",
+  },
+  {
+    name: "PS5",
+    description:
+      "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
+    price: "R$ 4.999,90",
+  },
+  {
+    name: "Xbox Series X",
+    description:
+      "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
+    price: "R$ 4.999,90",
+  },
+  {
+    name: "Amazon Echo Dot",
+    description:
+      "O Echo Dot é o smart speaker de maior sucesso. Controlado por voz com Alexa, ele é perfeito para qualquer ambiente. Você pode pedir músicas, notícias, informações e muito mais. Além de ligar para amigos e familiares e controlar dispositivos compatíveis de casa inteligente com sua voz.",
+    price: "R$ 349,00",
+  },
+  {
+    name: "Xbox Series X",
+    description:
+      "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
+    price: "R$ 4.999,90",
+  },
+];
+
 const Body = (props) => {
   return (
     <div className="container">
@@ -59,7 +98,26 @@ const Cart = (props) => {
   );
 };
 
+const CreateProduct = (props) => {
+  return <h1>oi</h1>;
+};
+
 class App extends Component {
+  renderPage = () => {
+    switch (this.state.page) {
+      case "products":
+        return <Body products={products} addToCart={this.addToCart} />;
+      case "cart":
+        return (
+          <Cart cart={this.state.cart} removeFromCart={this.removeFromCart} />
+        );
+      case "create":
+        return <CreateProduct />;
+      default:
+        return <Body products={products} addToCart={this.addToCart} />;
+    }
+  };
+
   state = {
     cart: [],
     page: "products",
@@ -82,45 +140,6 @@ class App extends Component {
   };
 
   render() {
-    const products = [
-      {
-        name: "PS5",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-      {
-        name: "Amazon Echo Dot",
-        description:
-          "O Echo Dot é o smart speaker de maior sucesso. Controlado por voz com Alexa, ele é perfeito para qualquer ambiente. Você pode pedir músicas, notícias, informações e muito mais. Além de ligar para amigos e familiares e controlar dispositivos compatíveis de casa inteligente com sua voz.",
-        price: "R$ 349,00",
-      },
-      {
-        name: "PS5",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-      {
-        name: "Xbox Series X",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-      {
-        name: "Amazon Echo Dot",
-        description:
-          "O Echo Dot é o smart speaker de maior sucesso. Controlado por voz com Alexa, ele é perfeito para qualquer ambiente. Você pode pedir músicas, notícias, informações e muito mais. Além de ligar para amigos e familiares e controlar dispositivos compatíveis de casa inteligente com sua voz.",
-        price: "R$ 349,00",
-      },
-      {
-        name: "Xbox Series X",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-    ];
-
     return (
       <div className="container text-left">
         <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
@@ -144,10 +163,11 @@ class App extends Component {
                 Products
               </button>
               <ul className="dropdown-menu dropdown-menu-dark">
-                <li>
-                  <a className="dropdown-item" href="/create">
-                    Create
-                  </a>
+                <li
+                  className="dropdown-item"
+                  onClick={() => this.navigateTo("create")}
+                >
+                  Create
                 </li>
                 <li>
                   <a className="dropdown-item" href="/update">
@@ -193,11 +213,7 @@ class App extends Component {
             </li>
           </ul>
         </header>
-        {this.state.page === "products" ? (
-          <Body products={products} addToCart={this.addToCart} />
-        ) : (
-          <Cart cart={this.state.cart} removeFromCart={this.removeFromCart} />
-        )}
+        {this.renderPage()}
       </div>
     );
   }
