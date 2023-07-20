@@ -11,3 +11,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h2 {
+  margin-right: 25rem;
+  color: #465775;
+}
+
+.right-item {
+  text-align: right;
+}
+
+#login,
+#logout {
+  margin-left: 10px;
+}
+
+#search {
+  margin-left: 15px;
+}
+
+.card:hover {
+  background-color: rgb(200, 221, 255);
+}
+
+.cart-button:hover,
+.store-title:hover {
+  cursor: pointer;
+}
