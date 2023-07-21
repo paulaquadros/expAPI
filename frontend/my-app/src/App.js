@@ -73,7 +73,7 @@ const Cart = (props) => {
       <h2>Seu carrinho</h2>
 
       {props.cart.length === 0 ? (
-        <p>Seu carrinho está vazio</p>
+        <p>tastando</p>
       ) : (
         props.cart.map((product, index) => (
           <div
@@ -165,7 +165,7 @@ class App extends Component {
               <ul className="dropdown-menu dropdown-menu-dark">
                 <li
                   className="dropdown-item"
-                  onClick={() => this.navigateTo("create")}
+                  onClick={() => this.setState({ page: "create" })}
                 >
                   Create
                 </li>

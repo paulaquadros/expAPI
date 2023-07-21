@@ -1,5 +1,38 @@
 import React, { Component } from "react";
 
+const products = [
+  {
+    nome: "PS5",
+    estoque: 10,
+    preco: "R$ 4.999,90",
+  },
+  {
+    nome: "Amazon Echo Dot",
+    estoque: 10,
+    preco: "R$ 349,00",
+  },
+  {
+    nome: "PS5",
+    estoque: 10,
+    preco: "R$ 4.999,90",
+  },
+  {
+    nome: "Xbox Series X",
+    estoque: 10,
+    preco: "R$ 4.999,90",
+  },
+  {
+    nome: "Amazon Echo Dot",
+    estoque: 10,
+    preco: "R$ 349,00",
+  },
+  {
+    nome: "Xbox Series X",
+    estoque: 10,
+    preco: "R$ 4.999,90",
+  },
+];
+
 const Body = (props) => {
   return (
     <div className="container">
@@ -8,10 +41,9 @@ const Body = (props) => {
           <div className="col-lg-4 col-md-6 mb-4" key={index}>
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">{product.description}</p>
+                <h5 className="card-title">{product.nome}</h5>
                 <p className="card-text">
-                  <small className="text-body-primary">{product.price}</small>
+                  <small className="text-body-primary">{product.preco}</small>
                 </p>
                 <button
                   className="btn btn-primary"
@@ -34,7 +66,7 @@ const Cart = (props) => {
       <h2>Seu carrinho</h2>
 
       {props.cart.length === 0 ? (
-        <p>Seu carrinho está vazio</p>
+        <p>Seu carrinho está vazio!</p>
       ) : (
         props.cart.map((product, index) => (
           <div
@@ -44,8 +76,8 @@ const Cart = (props) => {
               padding: "30px",
             }}
           >
-            <h5>{product.name}</h5>
-            <p>{product.price}</p>
+            <h5>{product.nome}</h5>
+            <p>{product.preco}</p>
             <button
               className="btn btn-danger"
               onClick={() => props.removeFromCart(index)}
@@ -59,7 +91,118 @@ const Cart = (props) => {
   );
 };
 
+const CreateProduct = (props) => {
+  return (
+    <div className="container">
+      <h1 className="mt-4">Adicionar Produto</h1>
+      <form action="#" method="post">
+        <div className="form-group mt-4">
+          <label for="nomeProduto">Nome</label>
+          <input
+            type="text"
+            className="form-control"
+            id="nomeProduto"
+            name="nomeProduto"
+            required
+          />
+        </div>
+        <div className="form-group mt-4">
+          <label for="precoProduto">Preço</label>
+          <input
+            type="number"
+            step="0.01"
+            className="form-control"
+            id="precoProduto"
+            name="precoProduto"
+            required
+          />
+        </div>
+        <div className="form-group mt-4">
+          <label for="estoqueProduto">Estoque</label>
+          <input
+            type="number"
+            className="form-control"
+            id="estoqueProduto"
+            name="estoqueProduto"
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary mt-4">
+          Adicionar Produto
+        </button>
+      </form>
+    </div>
+  );
+};
+
+const UpdateProduct = (props) => {
+  return (
+    <div className="container">
+      <h2>Atualizar produtos</h2>
+    </div>
+  );
+};
+
+const DeleteProduct = (props) => {
+  return (
+    <div className="container">
+      <h2>Deletar produtos</h2>
+    </div>
+  );
+};
+
+const ListProducts = (props) => {
+  return (
+    <div className="container">
+      <h2>Lista de produtos</h2>
+      <table className="table mt-4">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Estoque</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.products.map((product, index) => (
+            <tr key={index}>
+              <td>{product.nome}</td>
+              <td>{product.preco}</td>
+              <td>{product.estoque}</td>
+              <td>
+                <i class="bi bi-pencil-square"></i>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 class App extends Component {
+  renderPage = () => {
+    switch (this.state.page) {
+      case "products":
+        return <Body products={products} addToCart={this.addToCart} />;
+      case "cart":
+        return (
+          <Cart cart={this.state.cart} removeFromCart={this.removeFromCart} />
+        );
+      case "create":
+        return <CreateProduct />;
+      case "update":
+        return <UpdateProduct />;
+      case "delete":
+        return <DeleteProduct />;
+      case "listProducts":
+        return <ListProducts products={products} />;
+      default:
+        return <Body products={products} addToCart={this.addToCart} />;
+    }
+  };
+
   state = {
     cart: [],
     page: "products",
@@ -82,45 +225,6 @@ class App extends Component {
   };
 
   render() {
-    const products = [
-      {
-        name: "PS5",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-      {
-        name: "Amazon Echo Dot",
-        description:
-          "O Echo Dot é o smart speaker de maior sucesso. Controlado por voz com Alexa, ele é perfeito para qualquer ambiente. Você pode pedir músicas, notícias, informações e muito mais. Além de ligar para amigos e familiares e controlar dispositivos compatíveis de casa inteligente com sua voz.",
-        price: "R$ 349,00",
-      },
-      {
-        name: "PS5",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-      {
-        name: "Xbox Series X",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-      {
-        name: "Amazon Echo Dot",
-        description:
-          "O Echo Dot é o smart speaker de maior sucesso. Controlado por voz com Alexa, ele é perfeito para qualquer ambiente. Você pode pedir músicas, notícias, informações e muito mais. Além de ligar para amigos e familiares e controlar dispositivos compatíveis de casa inteligente com sua voz.",
-        price: "R$ 349,00",
-      },
-      {
-        name: "Xbox Series X",
-        description:
-          "Largura de banda da RAM: 448 GB/s; Taxa de transferência da RAM: 14 GB/s; Armazenamento interno: SSD customizado de 825 GB, barramento de 12 canais e controlador PCI Express 4.0, com taxa de transferência de 5,5 GB/s (tamanho original) ou 8,9 GB/s (compactado);",
-        price: "R$ 4.999,90",
-      },
-    ];
-
     return (
       <div className="container text-left">
         <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
@@ -144,18 +248,29 @@ class App extends Component {
                 Products
               </button>
               <ul className="dropdown-menu dropdown-menu-dark">
-                <li className="dropdown-item" onClick={this.createProduct}>
-                  Create
+                <li
+                  className="dropdown-item"
+                  onClick={() => this.setState({ page: "create" })}
+                >
+                  Adicionar
                 </li>
-                <li>
-                  <a className="dropdown-item" href="/update">
-                    Update
-                  </a>
+                <li
+                  className="dropdown-item"
+                  onClick={() => this.setState({ page: "update" })}
+                >
+                  Atualizar
                 </li>
-                <li>
-                  <a className="dropdown-item" href="/delete">
-                    Delete
-                  </a>
+                <li
+                  className="dropdown-item"
+                  onClick={() => this.setState({ page: "delete" })}
+                >
+                  Deletar
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => this.setState({ page: "listProducts" })}
+                >
+                  Todos os produtos
                 </li>
               </ul>
             </li>
@@ -187,15 +302,11 @@ class App extends Component {
               id="cart"
               onClick={() => this.setState({ page: "cart" })}
             >
-              Cart ({this.state.cart.length})
+              Carrinho ({this.state.cart.length})
             </li>
           </ul>
         </header>
-        {this.state.page === "products" ? (
-          <Body products={products} addToCart={this.addToCart} />
-        ) : (
-          <Cart cart={this.state.cart} removeFromCart={this.removeFromCart} />
-        )}
+        {this.renderPage()}
       </div>
     );
   }
