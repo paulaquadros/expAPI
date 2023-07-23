@@ -161,7 +161,7 @@ const ListProducts = (props) => {
             <th>Nome</th>
             <th>Preço</th>
             <th>Estoque</th>
-            <th>Ações</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -170,8 +170,14 @@ const ListProducts = (props) => {
               <td>{product.nome}</td>
               <td>{product.preco}</td>
               <td>{product.estoque}</td>
-              <td>
-                <i class="bi bi-pencil-square"></i>
+              <td style={{ width: "200px" }}>
+                <button
+                  style={{ marginRight: "10px" }}
+                  className="btn btn-primary"
+                >
+                  Editar
+                </button>
+                <button className="btn btn-danger">Deletar</button>
               </td>
             </tr>
           ))}

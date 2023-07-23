@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createUsuario } from '../usuario/usuario.service';
 import { buscaUsuarioPorEmail } from '../usuario/usuario.service';
 import { TiposUsuarios } from '../tipoUsuario/tipoUsuario.constants';
-import checkCredentials from './auth.service';
+import checkCredentials, { checkIsAdmin } from './auth.service';
 
 // Login
 const login = async (req: Request, res: Response) => {
@@ -13,8 +13,13 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Usuário não existe.' });
     req.session.uid = usuario.id;
     req.session.tipoUsuarioId = usuario.tipoUsuarioId;
-    res.status(200).json({ msg: 'Login realizado com sucesso.' });
-  } catch {}
+    res.status(200).json({
+      isAdmin: await checkIsAdmin(usuario.id),
+      msg: 'Login realizado com sucesso.',
+    });
+  } catch (e) {
+    res.status(500).json(e);
+  }
 };
 
 // Sign Up

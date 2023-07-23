@@ -16,6 +16,7 @@ import setLocals from './middlewares/setLocals';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
+import cors from 'cors';
 //import swaggerUi from 'swagger-ui-express';
 //import swaggerSpecs from './swagger';
 
@@ -52,6 +53,9 @@ export class Api {
   }
 
   private async middleware() {
+    this.server.use(
+      cors({ credentials: true, origin: 'http://localhost:3000' }),
+    );
     this.server.use(express.json());
     this.server.use(cookieParser());
     this.server.use(setLocals);
