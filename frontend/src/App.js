@@ -193,6 +193,7 @@ const DeleteProduct = (props) => {
   );
 };
 
+// Inventado pra facilitar delação e atualização dos produtos :D
 const ListProducts = (props) => {
   const [products, setProducts] = useState([]);
 
