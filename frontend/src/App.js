@@ -1,60 +1,76 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
+import axios from "./axios";
 
-const products = [
-  {
-    nome: "PS5",
-    estoque: 10,
-    preco: "R$ 4.999,90",
-  },
-  {
-    nome: "Amazon Echo Dot",
-    estoque: 10,
-    preco: "R$ 349,00",
-  },
-  {
-    nome: "PS5",
-    estoque: 10,
-    preco: "R$ 4.999,90",
-  },
-  {
-    nome: "Xbox Series X",
-    estoque: 10,
-    preco: "R$ 4.999,90",
-  },
-  {
-    nome: "Amazon Echo Dot",
-    estoque: 10,
-    preco: "R$ 349,00",
-  },
-  {
-    nome: "Xbox Series X",
-    estoque: 10,
-    preco: "R$ 4.999,90",
-  },
-];
+// const products = [
+//   // {
+//   //   nome: "PS5",
+//   //   estoque: 10,
+//   //   preco: "R$ 4.999,90",
+//   // },
+//   // {
+//   //   nome: "Amazon Echo Dot",
+//   //   estoque: 10,
+//   //   preco: "R$ 349,00",
+//   // },
+//   // {
+//   //   nome: "PS5",
+//   //   estoque: 10,
+//   //   preco: "R$ 4.999,90",
+//   // },
+//   // {
+//   //   nome: "Xbox Series X",
+//   //   estoque: 10,
+//   //   preco: "R$ 4.999,90",
+//   // },
+//   // {
+//   //   nome: "Amazon Echo Dot",
+//   //   estoque: 10,
+//   //   preco: "R$ 349,00",
+//   // },
+//   // {
+//   //   nome: "Xbox Series X",
+//   //   estoque: 10,
+//   //   preco: "R$ 4.999,90",
+//   // },
+// ];
 
 const Body = (props) => {
+  const [products, setProducts] = useState([]);
+
+  const getProducts = async () => {
+    const response = await axios.get("/produto");
+    setProducts(response.data);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
   return (
     <div className="container">
       <div className="row">
-        {props.products.map((product, index) => (
-          <div className="col-lg-4 col-md-6 mb-4" key={index}>
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">{product.nome}</h5>
-                <p className="card-text">
-                  <small className="text-body-primary">{product.preco}</small>
-                </p>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => props.addToCart(product)}
-                >
-                  Add to Cart
-                </button>
+        {products.length === 0 ? (
+          <h2>Não há itens!</h2>
+        ) : (
+          products.map((product, index) => (
+            <div className="col-lg-4 col-md-6 mb-4" key={index}>
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{product.nome}</h5>
+                  <p className="card-text">
+                    <small className="text-body-primary">{product.preco}</small>
+                  </p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => props.addToCart(product)}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
@@ -92,38 +108,64 @@ const Cart = (props) => {
 };
 
 const CreateProduct = (props) => {
+  const nomeProduto = useRef(null);
+  const precoProduto = useRef(null);
+  const estoqueProduto = useRef(null);
+
+  const inserirProduto = async (event) => {
+    event.preventDefault();
+    // console.log(nomeProduto.current.value);
+    // console.log(precoProduto.current.value);
+    // console.log(estoqueProduto.current.value);
+
+    const data = {
+      nome: nomeProduto.current.value,
+      preco: precoProduto.current.value,
+      estoque: estoqueProduto.current.value,
+    };
+
+    const response = await axios.post("/produto", data);
+
+    props.navigateTo("products");
+
+    console.log(response);
+  };
+
   return (
     <div className="container">
       <h1 className="mt-4">Adicionar Produto</h1>
-      <form action="#" method="post">
+      <form onSubmit={inserirProduto} action="#" method="post">
         <div className="form-group mt-4">
-          <label for="nomeProduto">Nome</label>
+          <label htmlFor="nomeProduto">Nome</label>
           <input
             type="text"
             className="form-control"
             id="nomeProduto"
             name="nomeProduto"
+            ref={nomeProduto}
             required
           />
         </div>
         <div className="form-group mt-4">
-          <label for="precoProduto">Preço</label>
+          <label htmlFor="precoProduto">Preço</label>
           <input
             type="number"
             step="0.01"
             className="form-control"
             id="precoProduto"
             name="precoProduto"
+            ref={precoProduto}
             required
           />
         </div>
         <div className="form-group mt-4">
-          <label for="estoqueProduto">Estoque</label>
+          <label htmlFor="estoqueProduto">Estoque</label>
           <input
             type="number"
             className="form-control"
             id="estoqueProduto"
             name="estoqueProduto"
+            ref={estoqueProduto}
             required
           />
         </div>
@@ -152,6 +194,23 @@ const DeleteProduct = (props) => {
 };
 
 const ListProducts = (props) => {
+  const [products, setProducts] = useState([]);
+
+  const getProducts = async () => {
+    const response = await axios.get("/produto");
+    setProducts(response.data);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const deleteProduct = async (id) => {
+    const response = await axios.delete(`/produto/${id}`);
+    console.log(response);
+    getProducts();
+  };
+
   return (
     <div className="container">
       <h2>Lista de produtos</h2>
@@ -165,7 +224,7 @@ const ListProducts = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.products.map((product, index) => (
+          {products.map((product, index) => (
             <tr key={index}>
               <td>{product.nome}</td>
               <td>{product.preco}</td>
@@ -177,7 +236,12 @@ const ListProducts = (props) => {
                 >
                   Editar
                 </button>
-                <button className="btn btn-danger">Deletar</button>
+                <button
+                  onClick={() => deleteProduct(product.id)}
+                  className="btn btn-danger"
+                >
+                  Deletar
+                </button>
               </td>
             </tr>
           ))}
@@ -191,21 +255,21 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.page) {
       case "products":
-        return <Body products={products} addToCart={this.addToCart} />;
+        return <Body addToCart={this.addToCart} />;
       case "cart":
         return (
           <Cart cart={this.state.cart} removeFromCart={this.removeFromCart} />
         );
       case "create":
-        return <CreateProduct />;
+        return <CreateProduct navigateTo={this.navigateTo} />;
       case "update":
         return <UpdateProduct />;
       case "delete":
         return <DeleteProduct />;
       case "listProducts":
-        return <ListProducts products={products} />;
+        return <ListProducts />;
       default:
-        return <Body products={products} addToCart={this.addToCart} />;
+        return <Body addToCart={this.addToCart} />;
     }
   };
 

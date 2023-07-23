@@ -53,8 +53,11 @@ export class Api {
   }
 
   private async middleware() {
+    // this.server.use(
+    //   cors({ credentials: true, origin: 'http://localhost:3000' }),
+    // );
     this.server.use(
-      cors({ credentials: true, origin: 'http://localhost:3000' }),
+      cors({ credentials: true, origin: 'http://localhost:3333' }),
     );
     this.server.use(express.json());
     this.server.use(cookieParser());
