@@ -114,9 +114,6 @@ const CreateProduct = (props) => {
 
   const inserirProduto = async (event) => {
     event.preventDefault();
-    // console.log(nomeProduto.current.value);
-    // console.log(precoProduto.current.value);
-    // console.log(estoqueProduto.current.value);
 
     const data = {
       nome: nomeProduto.current.value,
@@ -124,11 +121,9 @@ const CreateProduct = (props) => {
       estoque: estoqueProduto.current.value,
     };
 
-    const response = await axios.post("/produto", data);
+    await axios.post("/produto", data);
 
-    props.navigateTo("products");
-
-    console.log(response);
+    props.navigateTo("products", null);
   };
 
   return (
@@ -178,9 +173,76 @@ const CreateProduct = (props) => {
 };
 
 const UpdateProduct = (props) => {
+  const [nome, setNome] = useState(props.product.nome);
+  const [preco, setPreco] = useState(props.product.preco);
+  const [estoque, setEstoque] = useState(props.product.estoque);
+
+  const nomeProduto = useRef(null);
+  const precoProduto = useRef(null);
+  const estoqueProduto = useRef(null);
+
+  const atualizarProduto = async (event) => {
+    event.preventDefault();
+
+    const data = {
+      nome: nomeProduto.current.value,
+      preco: precoProduto.current.value,
+      estoque: estoqueProduto.current.value,
+    };
+
+    await axios.put(`/produto/${props.product.id}`, data);
+
+    props.navigateTo("products", null);
+  };
+
   return (
     <div className="container">
-      <h2>Atualizar produtos</h2>
+      <h1 className="mt-4">Atualizar Produto</h1>
+      <form onSubmit={atualizarProduto} action="#" method="post">
+        <div className="form-group mt-4">
+          <label htmlFor="nomeProduto">Nome</label>
+          <input
+            type="text"
+            className="form-control"
+            id="nomeProduto"
+            name="nomeProduto"
+            ref={nomeProduto}
+            value={nome}
+            onChange={(event) => setNome(event.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group mt-4">
+          <label htmlFor="precoProduto">Preço</label>
+          <input
+            type="number"
+            step="0.01"
+            className="form-control"
+            id="precoProduto"
+            name="precoProduto"
+            ref={precoProduto}
+            value={preco}
+            onChange={(event) => setPreco(event.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group mt-4">
+          <label htmlFor="estoqueProduto">Estoque</label>
+          <input
+            type="number"
+            className="form-control"
+            id="estoqueProduto"
+            name="estoqueProduto"
+            ref={estoqueProduto}
+            value={estoque}
+            onChange={(event) => setEstoque(event.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary mt-4">
+          Atualizar Produto
+        </button>
+      </form>
     </div>
   );
 };
@@ -205,6 +267,10 @@ const ListProducts = (props) => {
   useEffect(() => {
     getProducts();
   }, []);
+
+  const atualizarProduto = (product) => {
+    props.navigateTo("update", product);
+  };
 
   const deleteProduct = async (id) => {
     const response = await axios.delete(`/produto/${id}`);
@@ -232,6 +298,7 @@ const ListProducts = (props) => {
               <td>{product.estoque}</td>
               <td style={{ width: "200px" }}>
                 <button
+                  onClick={() => atualizarProduto(product)}
                   style={{ marginRight: "10px" }}
                   className="btn btn-primary"
                 >
@@ -264,11 +331,16 @@ class App extends Component {
       case "create":
         return <CreateProduct navigateTo={this.navigateTo} />;
       case "update":
-        return <UpdateProduct />;
+        return (
+          <UpdateProduct
+            navigateTo={this.navigateTo}
+            product={this.state.product}
+          />
+        );
       case "delete":
         return <DeleteProduct />;
       case "listProducts":
-        return <ListProducts />;
+        return <ListProducts navigateTo={this.navigateTo} />;
       default:
         return <Body addToCart={this.addToCart} />;
     }
@@ -277,6 +349,7 @@ class App extends Component {
   state = {
     cart: [],
     page: "products",
+    productId: null,
   };
 
   addToCart = (product) => {
@@ -291,8 +364,8 @@ class App extends Component {
     }));
   };
 
-  navigateTo = (page) => {
-    this.setState({ page });
+  navigateTo = (page, product) => {
+    this.setState({ page, product });
   };
 
   render() {
@@ -304,7 +377,7 @@ class App extends Component {
               <h2
                 className="store-title"
                 onClick={() => {
-                  this.navigateTo("products");
+                  this.navigateTo("products", null);
                 }}
               >
                 Store
